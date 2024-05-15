@@ -1,18 +1,209 @@
-import CreateTagPopUp from "../components/CreateTagPopUp";
-import DonutChartCard from "../components/DonutChartCard";
-import { useState } from "react";
+
+import { Chart } from 'react-google-charts';
 
 function ReportsPage() {
 
-    const [showCreateTagPopUp, setShowCreateTagPopUp] = useState(false);
+    const data = [
+        ["tag", "amount"],
+        ["House", 11.5],
+        ["Remaining", 2],
+        ["Car", 5],
+        ["Food", 3],
+        ["Entertainment", 2],
+        ["Health", 2],
+        ["Education", 2],
+        ["Investment", 2],
+        ["Clothing", 2],
+        ["Others", 2],
+    ];
+    const incomes = {
+        title: "Incomes",
+        pieHole: 0.4,
+        is3D: false,
+        backgroundColor: 'transparent',
+        slices: [
+            {
+                color: "#e91e63"
+            },
+            {
+                color: "#f8bbd0"
+            },
+            {
+                color: "#673ab7"
+            },
+            {
+                color: "#7b1fa2"
+            },
+            {
+                color: "#880e4f"
+            },
+            {
+                color: "#1a237e"
+            },
+            {
+                color: "#1565c0"
+            },
+            {
+                color: "#0097a7"
+            },
+            {
+                color: "#e65100"
+            },
+            {
+                color: "#00695c"
+            },
+        ],
+        titleTextStyle: {
+            color: "#000",
+            fontSize: 30,
+            bold: true
+        },
+        height: 400,
+        width: "100%",
+        legend:{
+            textStyle: {
+                color: "#000",
+                fontSize: 20
+            },
+        }
+        
+    };
 
+    const expenses = {
+        title: "Expenses",
+        pieHole: 0.4,
+        is3D: false,
+        backgroundColor: 'transparent',
+        slices: [
+            {
+                color: "#e91e63"
+            },
+            {
+                color: "#f8bbd0"
+            },
+            {
+                color: "#673ab7"
+            },
+            {
+                color: "#7b1fa2"
+            },
+            {
+                color: "#880e4f"
+            },
+            {
+                color: "#1a237e"
+            },
+            {
+                color: "#1565c0"
+            },
+            {
+                color: "#0097a7"
+            },
+            {
+                color: "#e65100"
+            },
+            {
+                color: "#00695c"
+            },
+
+        ],
+        titleTextStyle: {
+            color: "#000",
+            fontSize: 30,
+            bold: true
+        },
+        height: 400,
+        width: "100%",
+        legend:{
+            textStyle: {
+                color: "#000",
+                fontSize: 20
+            },
+        }
+        
+    };
+
+    const savings = {
+        title: "Savings",
+        pieHole: 0.4,
+        is3D: false,
+        backgroundColor: 'transparent',
+        slices: [
+            {
+                color: "#e91e63"
+            },
+            {
+                color: "#f8bbd0"
+            },
+            {
+                color: "#673ab7"
+            },
+            {
+                color: "#7b1fa2"
+            },
+            {
+                color: "#880e4f"
+            },
+            {
+                color: "#1a237e"
+            },
+            {
+                color: "#1565c0"
+            },
+            {
+                color: "#0097a7"
+            },
+            {
+                color: "#e65100"
+            },
+            {
+                color: "#00695c"
+            },
+        ],
+        titleTextStyle: {
+            color: "#000",
+            fontSize: 30,
+            bold: true
+        },
+        height: 400,
+        width: "100%",
+        legend:{
+            textStyle: {
+                color: "#000",
+                fontSize: 20
+            },
+        }
+        
+    };
 
     return (
         <div>
             <h1 className='text-6xl m-8 text-violet-100'>Reports</h1>
-            <CreateTagPopUp showCreateTagPopUp={showCreateTagPopUp} setShowCreateTagPopUp={setShowCreateTagPopUp}/>
-            <DonutChartCard/>
-            
+
+            <div className="m-8 rounded-lg bg-violet-300 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] sm:shrink-0 sm:grow sm:basis-0">
+                <Chart
+                    chartType="PieChart"
+                    data={data}
+                    options={incomes}
+                />
+            </div>
+
+            <div className="m-8 rounded-lg bg-violet-300 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] sm:shrink-0 sm:grow sm:basis-0">
+                <Chart
+                    chartType="PieChart"
+                    data={data}
+                    options={expenses}
+                />
+            </div>
+
+            <div className="m-8 rounded-lg bg-violet-300 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] sm:shrink-0 sm:grow sm:basis-0">
+                <Chart
+                    chartType="PieChart"
+                    data={data}
+                    options={savings}
+                />
+            </div>
+
         </div>
     );
 }

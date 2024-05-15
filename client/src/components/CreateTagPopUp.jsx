@@ -2,6 +2,7 @@ import {Modal, ModalBody, ModalHeader} from "flowbite-react"
 import { useState } from "react";
 
 
+// eslint-disable-next-line react/prop-types
 function CreateTagPopUp({showCreateTagPopUp, setShowCreateTagPopUp}){
 
     const [name, setName] = useState("");
