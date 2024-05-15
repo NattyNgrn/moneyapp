@@ -9,9 +9,7 @@ function ReportsPage() {
 
     return (
         <div>
-            <h1 className='text-6xl m-8 text-violet-200'>Reports</h1>
-            <button className="hover:bg-orange-400 p-px px-2 rounded m-2 bg-orange-500 text-violet-950 text-4xl" onClick={(e) => e.preventDefault() || setShowCreateTagPopUp(true)}>Create New Tag</button>
-
+            <h1 className='text-6xl m-8 text-violet-100'>Reports</h1>
             <CreateTagPopUp showCreateTagPopUp={showCreateTagPopUp} setShowCreateTagPopUp={setShowCreateTagPopUp}/>
             <DonutChartCard/>
             

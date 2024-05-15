@@ -9,11 +9,10 @@ function TrackerPage(){
     const [showCreateTagPopUp, setShowCreateTagPopUp] = useState(false);
     return(
         <div>
-
+            <h1 className='text-6xl m-8 text-violet-100'>Tracker</h1>
             <div className='flex items-center justify-center'>
-                <h1 className='text-6xl m-8 text-violet-200'>Tracker</h1>
-                <button className="hover:bg-orange-400 p-px px-2 rounded m-2 bg-orange-500 text-violet-950 text-4xl" onClick={(e) => e.preventDefault() || setShowAddPopUp(true)}>Add New</button>
-                <button className="hover:bg-orange-400 p-px px-2 rounded m-2 bg-orange-500 text-violet-950 text-4xl" onClick={(e) => e.preventDefault() || setShowCreateTagPopUp(true)}>Create New Tag</button>
+                <button className="hover:bg-violet-200 p-px px-2 rounded m-2 mb-8 bg-violet-300 text-violet-900 text-4xl" onClick={(e) => e.preventDefault() || setShowAddPopUp(true)}>Add New</button>
+                <button className="hover:bg-violet-200 p-px px-2 rounded m-2 mb-8 bg-violet-300 text-violet-900 text-4xl" onClick={(e) => e.preventDefault() || setShowCreateTagPopUp(true)}>Create New Tag</button>
             </div>
             <AddPopUp showAddPopUp={showAddPopUp} setShowAddPopUp={setShowAddPopUp}/>
             <CreateTagPopUp showCreateTagPopUp={showCreateTagPopUp} setShowCreateTagPopUp={setShowCreateTagPopUp}/>
