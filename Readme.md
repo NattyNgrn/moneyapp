@@ -13,11 +13,13 @@ npm run start
 ```
 Then open another terminal window in the same folder to setup the client.
 Create a .env.local file in the client folder.
-In it, put VITE_CLERK_PUBLISHABLE_KEY={the key i send you for this}
+In it, put 
+VITE_CLERK_PUBLISHABLE_KEY={the key i send you for this}
 ```
 cd client
 npm install
 npm run dev
+```
 
 ## Dependencies
 

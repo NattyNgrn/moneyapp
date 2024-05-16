@@ -1,10 +1,21 @@
 import CreateTagPopUp from '../components/CreateTagPopUp';
 import AddPopUp from '../components/AddPopUp';
 import MoneyTable from '../components/MoneyTable/';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useUser } from "@clerk/clerk-react";
 
 function TrackerPage(){
 
+    const { user, isLoaded } = useUser();
+    const [ transactions, setTransactions ] = useState([]);
+    useEffect(() => {
+        if (isLoaded && user) {
+            fetch(`http://localhost:1287/transactions/${user.id}`)
+                .then((res) => res.json())
+                .then((data) => setTransactions(data))
+                .catch((error) => console.log(error));
+        }
+    }, [isLoaded, user, setTransactions]);
     const [showAddPopUp, setShowAddPopUp] = useState(false);
     const [showCreateTagPopUp, setShowCreateTagPopUp] = useState(false);
     return(
@@ -16,7 +27,7 @@ function TrackerPage(){
             </div>
             <AddPopUp showAddPopUp={showAddPopUp} setShowAddPopUp={setShowAddPopUp}/>
             <CreateTagPopUp showCreateTagPopUp={showCreateTagPopUp} setShowCreateTagPopUp={setShowCreateTagPopUp}/>
-            <MoneyTable/>
+            <MoneyTable transactions={transactions} />
 
         </div>
     )
