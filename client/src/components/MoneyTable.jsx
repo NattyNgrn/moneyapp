@@ -2,20 +2,9 @@
 import { Table, TableBody, TableHead, TableHeadCell, TableRow,  TableCell } from "flowbite-react";
 import { useState } from "react";
 import EditPopUp from "./EditPopUp";
+import { formatDate, sortDates } from "../helpers";
 
 function MoneyTable({transactions}){
-
-    const formatDate = (date) => {
-        date = new Date(date).toLocaleString('en-US', { timeZone: 'UTC' });
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        return new Date(date).toLocaleDateString('en-US', options);
-    };
-
-    const sortDates = (a,b) => {
-        if (a.date > b.date) return -1;
-        else if (a.date < b.date) return 1;
-        else return 0;
-    };
 
     const [showEditPopUp, setShowEditPopUp] = useState(false);
     const [transactionToEdit, setTransactionToEdit] = useState({});

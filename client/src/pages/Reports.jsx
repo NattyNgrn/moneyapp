@@ -7,29 +7,27 @@ function ReportsPage() {
 
     const {user, isLoaded} = useUser();
     const [categoriesInfo, setCategoriesInfo] = useState({income: [], expense: [], saving: []});
-
-    // const data = [
-    //     ["tag", "amount"],
-    //     ["House", 11.5],
-    //     ["Remaining", 2],
-    //     ["Car", 5],
-    //     ["Food", 3],
-    //     ["Entertainment", 2],
-    //     ["Health", 2],
-    //     ["Education", 2],
-    //     ["Investment", 2],
-    //     ["Clothing", 2],
-    //     ["Others", 2],
-    // ];
+    const [amountPerCategory, setAmountPerCategory] = useState({income: 0, expense: 0, saving: 0});
 
     useEffect(() => {
         if (isLoaded && user) {
-            fetch(`http://localhost:1287/getCategoryInfo/${user.id}`)
+            fetch(`http://localhost:1287/getcategoryinfo/${user.id}`)
             .then((response) => response.json())
             .then((data) => setCategoriesInfo(data))
             .catch((error) => console.error('Error:', error));
         }
     }, [setCategoriesInfo, isLoaded, user]);
+
+    useEffect(() => {
+        if (isLoaded && user) {
+            fetch(`http://localhost:1287/getamountforcategories/${user.id}`)
+            .then((response) => response.json())
+            .then((data) => setAmountPerCategory(data))
+            .catch((error) => console.error('Error:', error));
+        }
+    }, [setCategoriesInfo, isLoaded, user]);
+
+    console.log(amountPerCategory);
 
     const incomes = {
         title: "Income",
@@ -216,7 +214,15 @@ function ReportsPage() {
                     options={savings}
                 />
             </div>
-
+            
+            <div>
+                <h1 className='text-4xl m-8 text-violet-100'>Total Amounts</h1>
+                    <h1 className='text-2xl m-8 text-violet-100'>Income: {amountPerCategory.income}</h1>
+                    <h1 className='text-2xl m-8 text-violet-100'>Expense: {amountPerCategory.expense}</h1>
+                    <h1 className='text-2xl m-8 text-violet-100'>Saving: {amountPerCategory.saving}</h1>
+                    <h1 className='text-2xl m-8 text-violet-100'>Savings Rate: {amountPerCategory.savingsRate}%</h1>
+                    <h1 className='text-2xl m-8 text-violet-100'>Spending Rate: {amountPerCategory.spendingRate}%</h1>
+            </div>
         </div>
     );
 }

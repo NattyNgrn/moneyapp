@@ -1,7 +1,7 @@
 import express  from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { pool, getAmountForTagQuery, getAmountsForTagsQueries } from "./helpers.js";
+import { pool, getAmountsForTagsQueries } from "./helpers.js";
 
 const app = express();
 const port = 1287;
@@ -157,6 +157,25 @@ app.get("/getcategoryinfo/:clerkid", async (req, res) => {
         result.income = await getCategoryInfo("Income", clerkid);
         result.expense = await getCategoryInfo("Expense", clerkid);
         result.saving = await getCategoryInfo("Saving", clerkid);
+        res.send(result);
+    } catch (error) {
+        console.log(error);
+        return res.sendStatus(400);
+    }
+});
+
+app.get("/getamountforcategories/:clerkid", async (req, res) => {
+    try {
+        const clerkid = req.params.clerkid;
+        const result = {};
+        const income = await pool.query(`SELECT SUM(amount) FROM transactions WHERE category='Income' AND clerkid='${clerkid}'`);
+        const expense = await pool.query(`SELECT SUM(amount) FROM transactions WHERE category='Expense' AND clerkid='${clerkid}'`);
+        const saving = await pool.query(`SELECT SUM(amount) FROM transactions WHERE category='Saving' AND clerkid='${clerkid}'`);
+        result.income = Number(income.rows[0].sum);
+        result.expense = Number(expense.rows[0].sum);
+        result.saving = Number(saving.rows[0].sum);
+        result.savingsRate = (result.saving / result.income) * 100;
+        result.spendingRate = (result.expense / result.income) * 100;
         res.send(result);
     } catch (error) {
         console.log(error);
