@@ -1,7 +1,7 @@
 import express  from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { pool } from "./helpers.js";
+import { pool, getAmountForTagQuery, getAmountsForTagsQueries } from "./helpers.js";
 
 const app = express();
 const port = 1287;
@@ -107,14 +107,6 @@ app.post("/updatetag", async (req, res) => {
     }
 });
 
-async function getAmountForTag(tagname, clerkid) {
-    const sumResult = await pool.query(
-        "SELECT SUM(amount) FROM transactions WHERE tagname = $1 AND clerkid=$2",
-        [tagname, clerkid]
-    );
-    return sumResult.rows[0].sum;
-}
-
 app.get("/getgoalsinfo/:clerkid", async (req, res) => {
     try {
         const clerkid = req.params.clerkid;
@@ -123,9 +115,11 @@ app.get("/getgoalsinfo/:clerkid", async (req, res) => {
             "SELECT tagname, total FROM tags WHERE clerkid = $1 AND isgoal = true",
             [clerkid]
         );
+        const amountQueries = getAmountsForTagsQueries(goalTags.rows, clerkid);
         for (let i = 0; i < goalTags.rows.length; i++) {
             const row = goalTags.rows[i];
-            const amount = await getAmountForTag(row.tagname, clerkid);
+            const sumResult = await pool.query(amountQueries[i]);
+            const amount = sumResult.rows[0].sum;
             result.push({
                 tagname: row.tagname,
                 current: amount,
@@ -146,9 +140,11 @@ async function getCategoryInfo(category, clerkid) {
         "SELECT tagname FROM tags WHERE clerkid=$2 AND category = $1",
         [category, clerkid]
     );
+    const amountQueries = getAmountsForTagsQueries(tags.rows, clerkid);
     for (let i = 0; i < tags.rows.length; i++) {
         const tagname = tags.rows[i].tagname;
-        const amount = await getAmountForTag(tagname, clerkid);
+        const sumResult = await pool.query(amountQueries[i]);
+        const amount = sumResult.rows[0].sum;
         result.push([tagname, Number(amount)]);
     }
     return result;
