@@ -23,7 +23,7 @@ function CreateTagPopUp({showCreateTagPopUp, setShowCreateTagPopUp}){
                 clerkid: user.id,
                 category: category,
                 tagname: name,
-                isGoal: goal,
+                isgoal: goal,
                 total: totalAmount
             })
         });

@@ -107,8 +107,11 @@ app.post("/updatetag", async (req, res) => {
     }
 });
 
-async function getAmountForTag(tagname) {
-    const sumResult = await pool.query("SELECT SUM(amount) FROM transactions WHERE tagname = $1", [tagname]);
+async function getAmountForTag(tagname, clerkid) {
+    const sumResult = await pool.query(
+        "SELECT SUM(amount) FROM transactions WHERE tagname = $1 AND clerkid=$2",
+        [tagname, clerkid]
+    );
     return sumResult.rows[0].sum;
 }
 
@@ -120,14 +123,16 @@ app.get("/getgoalsinfo/:clerkid", async (req, res) => {
             "SELECT tagname, total FROM tags WHERE clerkid = $1 AND isgoal = true",
             [clerkid]
         );
-        for (const row in goalTags.rows) {
-            const amount = await getAmountForTag(row.tagname);
+        for (let i = 0; i < goalTags.rows.length; i++) {
+            const row = goalTags.rows[i];
+            const amount = await getAmountForTag(row.tagname, clerkid);
             result.push({
                 tagname: row.tagname,
                 current: amount,
                 total: row.total
             });
         }
+        console.log(result);
         res.send(result);
     } catch (error) {
         console.log(error);

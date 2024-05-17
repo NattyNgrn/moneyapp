@@ -1,24 +1,21 @@
 
 import {Chart}  from 'react-google-charts';
 
+// eslint-disable-next-line react/prop-types
+function DonutChartCard({title, current, goal}) {
 
-function DonutChartCard() {
+    let remaining = goal - current;
 
     const data = [
-        ["tag", "amount"],
-        ["House", 11.5],
-        ["Remaining", 2],
-        ["Car", 1],
-        ["Travel", 1],
-        ["Food", 1],
-        ["Clothes", 1],
-        ["Health", 1],
-        ["Education", 1],
-        ["Entertainment", 1],
-        ["Other", 1],
+        ['tag', 'amount'],
+        ["Current", Number(current)],
+        ["Remaining", Number(remaining)],
     ];
+    console.log(title, goal, current, remaining);
+    //console.log(title, data);
+
     const options = {
-        title: "Buy a House",
+        title: title,
         pieHole: 0.4,
         is3D: false,
         backgroundColor: 'transparent',
@@ -67,20 +64,18 @@ function DonutChartCard() {
                 fontSize: 20
             },
         }
-        
     };
 
     return(
-    
-            <div className="m-8 self-start rounded-lg bg-violet-300 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] sm:shrink-0 sm:grow sm:basis-0">
-                
-                    <Chart
-                        chartType="PieChart"
-                        data={data}
-                        options={options}
-                    />
-                
-            </div>
+        <div className="m-8 self-start rounded-lg bg-violet-300 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] sm:shrink-0 sm:grow sm:basis-0">
+            
+            <Chart
+                chartType="PieChart"
+                data={data}
+                options={options}
+            />
+            
+        </div>
     )
 }
 
