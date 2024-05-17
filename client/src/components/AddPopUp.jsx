@@ -76,6 +76,7 @@ function AddPopUp({showAddPopUp, setShowAddPopUp}){
                     <div className="m-4 flex items-center justify-center text-black">
                         <label className="m-4 ">Tag: </label>
                         <select onChange={(e) => setTag(e.target.value)}>
+                            <option key="" value=""></option>
                             {allTags.filter((tag) => tag.category === category).map((tag) => (
                                 <option key={tag.tagname} value={tag.tagname}>{tag.tagname}</option>
                             ))}
@@ -86,10 +87,6 @@ function AddPopUp({showAddPopUp, setShowAddPopUp}){
                         <label className="m-4">Amount: </label>
                         <input type="number" placeholder="Amount" onChange={(e) => setAmount(e.target.value)}></input>
                     </div>
-
-                    
-
-                    
 
                     <div className="m-4 flex items-center justify-center">
                         <button

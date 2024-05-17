@@ -1,18 +1,73 @@
-import { useState } from 'react';
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from 'react';
 import {Modal, ModalBody, ModalHeader} from "flowbite-react"
-import { useUser} from '@clerk/clerk-react';
+import { useUser } from '@clerk/clerk-react';
 
-// eslint-disable-next-line react/prop-types
-function EditPopUp({showEditPopUp, setShowEditPopUp}){
+function EditPopUp({showEditPopUp, setShowEditPopUp, transaction}){
 
     const { user, isLoaded } = useUser();
 
     const [date, setDate] = useState(new Date().toDateString());
-    const [category, setCategory] = useState("Income");
-    const [amount, setAmount] = useState("");
-    const [tag, setTag] = useState("");
-    const [name, setName] = useState("");
+    const [category, setCategory] = useState(transaction.category);
+    const [amount, setAmount] = useState(transaction.amount);
+    const [tag, setTag] = useState(transaction.tagname);
 
+    useEffect(() => {
+        if (transaction) {
+            setDate(transaction.date?.substring(0,10));
+            setCategory(transaction.category);
+            setAmount(transaction.amount);
+            setTag(transaction.tagname);
+        }
+    }, [transaction]);
+
+    const [allTags, setAllTags] = useState([]);
+
+    useEffect(() => {
+        if (user && isLoaded) {
+            fetch(`http://localhost:1287/tags/${user.id}`)
+                .then((res) => res.json())
+                .then((data) => setAllTags(data))
+                .catch((error) => console.log(error));
+        }
+    }, [user, isLoaded, setAllTags]);
+
+    const deleteTransaction = () => {
+        if (!isLoaded) return;
+        fetch(`http://localhost:1287/deletetransaction`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                clerkid: user.id,
+                name: transaction.name,
+            })
+        });
+        setShowEditPopUp(false);
+        window.location.reload();
+    };
+
+    const updateTransaction = () => {
+        if (!isLoaded) return;
+        fetch(`http://localhost:1287/updatetransaction`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                clerkid: user.id,
+                category: category,
+                tagname: tag,
+                amount: amount,
+                name: transaction.name,
+                date: date,
+            })
+        });
+        setShowEditPopUp(false);
+        window.location.reload();
+    };
+    //console.log(transaction.date.substring(0,10));
     return (
         <div>
             <Modal className="bg-pink-500" dismissible show={showEditPopUp} onClose={() => setShowEditPopUp(false)}>
@@ -22,14 +77,14 @@ function EditPopUp({showEditPopUp, setShowEditPopUp}){
                 </ModalHeader>
 
                 <ModalBody className="bg-violet-200">
-                    <div className="m-4 text-black">
-                            <label className="m-4">Date: </label>
-                            <input type="date" placeholder={date} onChange={(e) => setDate(e.target.value)}></input>
-                    </div>
-
                     <div className="m-4 flex items-center justify-center text-black">
                         <label className="m-4">Name: </label>
-                        <input type="text" value={name} placeholder="Name" onChange={(e) => setName(e.target.value)}></input>
+                        <label className="m-4">{transaction.name}</label>
+                    </div>
+
+                    <div className="m-4 text-black">
+                        <label className="m-4">Date: </label>
+                        <input type="date" value={date} onChange={(e) => setDate(e.target.value)}></input>
                     </div>
 
                     <div className="m-4 text-black">
@@ -43,8 +98,11 @@ function EditPopUp({showEditPopUp, setShowEditPopUp}){
 
                     <div className="m-4 flex items-center justify-center text-black">
                         <label className="m-4 ">Tag: </label>
-                        <select onChange={(e) => setTag(e.target.value)}>
-                            <option value="Tag">Tag</option>
+                        <select value={tag} onChange={(e) => setTag(e.target.value)}>
+                            <option key="" value=""></option>
+                            {allTags.filter((tag) => tag.category === category).map((tag) => (
+                                <option key={tag.tagname} value={tag.tagname}>{tag.tagname}</option>
+                            ))}
                         </select>
                     </div>
 
@@ -56,13 +114,13 @@ function EditPopUp({showEditPopUp, setShowEditPopUp}){
                     <div className="m-4 flex items-center justify-center">
                         <button
                             className="hover:bg-pink-400 hover:text-violet-900 p-px px-2 rounded m-2 bg-pink-500 text-violet-100 text-4xl"
-                            onClick={() => setShowEditPopUp(false)}
+                            onClick={updateTransaction}
                             >
                                 Save
                         </button>
 
                         <button className="hover:bg-pink-400 hover:text-violet-900 p-px px-2 rounded m-2 bg-pink-500 text-violet-100 text-4xl"
-                            onClick={() => setShowEditPopUp(false)}
+                            onClick={deleteTransaction}
                         >
                             Delete Transaction
                         </button>

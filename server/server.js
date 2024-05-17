@@ -45,8 +45,9 @@ app.put("/addtransaction", async (req, res) => {
 app.post("/updatetransaction", async (req, res) => {
     try {
         const { clerkid, category, tagname, amount, name, date } = req.body;
+        console.log("updating transaction");
         await pool.query(
-            "UPDATE transactions SET category = $2, tagname = $3, amount = $4, date = $6 WHERE name = $5",
+            "UPDATE transactions SET category = $2, tagname = $3, amount = $4, date = $6 WHERE name = $5 AND clerkid=$1",
             [clerkid, category, tagname, amount, name, date]
         );
         res.sendStatus(200);

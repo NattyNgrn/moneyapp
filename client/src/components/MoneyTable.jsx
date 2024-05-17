@@ -11,8 +11,14 @@ function MoneyTable({transactions}){
         return new Date(date).toLocaleDateString('en-US', options);
     };
 
-    const [showEditPopUp, setShowEditPopUp] = useState(false);
+    const sortDates = (a,b) => {
+        if (a.date > b.date) return -1;
+        else if (a.date < b.date) return 1;
+        else return 0;
+    };
 
+    const [showEditPopUp, setShowEditPopUp] = useState(false);
+    const [transactionToEdit, setTransactionToEdit] = useState({});
 
     return (
         <div>
@@ -27,7 +33,7 @@ function MoneyTable({transactions}){
                         <TableHeadCell className="bg-pink-400 text-pink-100 text-xl">Edit</TableHeadCell>
                     </TableHead>
                     <TableBody>
-                        {transactions.map((transaction) => (
+                        {transactions.sort(sortDates).map((transaction) => (
                             <TableRow key={transaction.name}>
                                 <TableCell className="bg-pink-300 text-pink-500 text-xl">{formatDate(transaction.date)}</TableCell>
                                 <TableCell className="bg-pink-300 text-pink-500 text-xl">{transaction.name}</TableCell>
@@ -37,7 +43,7 @@ function MoneyTable({transactions}){
                                 <TableCell className="bg-pink-300 text-pink-500 text-xl">
                                     <button
                                         className="hover:bg-pink-400 p-px px-2 rounded bg-pink-500 text-pink-100"
-                                        onClick={(e) => e.preventDefault() || setShowEditPopUp(true)}
+                                        onClick={(e) => e.preventDefault() || setTransactionToEdit(transaction) || setShowEditPopUp(true)}
                                         >
                                         Edit
                                     </button>
@@ -47,7 +53,7 @@ function MoneyTable({transactions}){
                     </TableBody>
                 </Table>
             </div>
-            <EditPopUp showEditPopUp={showEditPopUp} setShowEditPopUp={setShowEditPopUp}/>
+            <EditPopUp showEditPopUp={showEditPopUp} setShowEditPopUp={setShowEditPopUp} transaction={transactionToEdit} />
         </div>
     )
 }
