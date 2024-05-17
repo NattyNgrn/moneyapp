@@ -1,19 +1,37 @@
 import {Modal, ModalBody, ModalHeader} from "flowbite-react"
 import { useState } from "react";
-
+import { useUser } from "@clerk/clerk-react";
 
 // eslint-disable-next-line react/prop-types
 function CreateTagPopUp({showCreateTagPopUp, setShowCreateTagPopUp}){
 
+    const { user, isLoaded } = useUser();
+
     const [name, setName] = useState("");
     const [goal, setGoal] = useState(false);
-    const [currentAmount, setCurrentAmount] = useState(0);
     const [totalAmount, setTotalAmount] = useState(0);
-    const [category, setCategory] = useState("Income"); 
+    const [category, setCategory] = useState("Income");
 
+    const addTag = () => {
+        if (!isLoaded) return;
+        fetch(`http://localhost:1287/addtag`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                clerkid: user.id,
+                category: category,
+                tagname: name,
+                isGoal: goal,
+                total: totalAmount
+            })
+        });
+        setShowCreateTagPopUp(false);
+        window.location.reload();
+    };
 
-
-    return(
+    return (
         <div>
             <Modal className="bg-pink-500" dismissible show={showCreateTagPopUp} onClose={() => setShowCreateTagPopUp(false)}>
                 <ModalHeader className="bg-violet-300">
@@ -59,7 +77,7 @@ function CreateTagPopUp({showCreateTagPopUp, setShowCreateTagPopUp}){
 
 
                     <div className="m-4">
-                        <button className="hover:bg-pink-400 hover:text-violet-900 p-px px-2 rounded m-2 bg-pink-500 text-violet-100 text-4xl" onClick={(e) => e.preventDefault() || setShowCreateTagPopUp(false)}>Save</button>
+                        <button className="hover:bg-pink-400 hover:text-violet-900 p-px px-2 rounded m-2 bg-pink-500 text-violet-100 text-4xl" onClick={addTag}>Save</button>
                     </div>
 
                 </ModalBody>

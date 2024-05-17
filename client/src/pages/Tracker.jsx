@@ -4,7 +4,7 @@ import MoneyTable from '../components/MoneyTable/';
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 
-function TrackerPage(){
+function TrackerPage() {
 
     const { user, isLoaded } = useUser();
     const [ transactions, setTransactions ] = useState([]);
@@ -16,8 +16,10 @@ function TrackerPage(){
                 .catch((error) => console.log(error));
         }
     }, [isLoaded, user, setTransactions]);
+
     const [showAddPopUp, setShowAddPopUp] = useState(false);
     const [showCreateTagPopUp, setShowCreateTagPopUp] = useState(false);
+    
     return(
         <div>
             <h1 className='text-6xl m-8 text-violet-100'>Tracker</h1>
@@ -28,7 +30,6 @@ function TrackerPage(){
             <AddPopUp showAddPopUp={showAddPopUp} setShowAddPopUp={setShowAddPopUp}/>
             <CreateTagPopUp showCreateTagPopUp={showCreateTagPopUp} setShowCreateTagPopUp={setShowCreateTagPopUp}/>
             <MoneyTable transactions={transactions} />
-
         </div>
     )
 }

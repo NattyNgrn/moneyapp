@@ -13,10 +13,6 @@ app.use(bodyParser.json());
 
 pool.connect();
 
-pool.query(
-    "SELECT * FROM transactions"
-).then((res) => { console.log(res.rows); });
-
 app.get("/", (req, res) => {
     res.json("IT WORKS");
 });
@@ -84,10 +80,10 @@ app.get("/tags/:clerkid", async (req, res) => {
 
 app.put("/addtag", async (req, res) => {
     try {
-        const { clerkid, tagname, isgoal, current, total, category } = req.body;
+        const { clerkid, tagname, isgoal, total, category } = req.body;
         await pool.query(
-            "INSERT INTO transactions (clerkid, tagname, isgoal, current, total, category) VALUES ($1, $2, $3, $4, $5, $6)",
-            [clerkid, tagname, isgoal, current, total, category]
+            "INSERT INTO tags (clerkid, tagname, isgoal, total, category) VALUES ($1, $2, $3, $4, $5)",
+            [clerkid, tagname, isgoal, total, category]
         );
         res.sendStatus(200);
     } catch (error) {
@@ -98,10 +94,10 @@ app.put("/addtag", async (req, res) => {
 
 app.post("/updatetag", async (req, res) => {
     try {
-        const { clerkid, tagname, isgoal, current, total, category } = req.body;
+        const { clerkid, tagname, isgoal, total, category } = req.body;
         await pool.query(
-            "UPDATE transactions SET isgoal = $3, current = $4, total = $5, category = $6 WHERE tagname = $2 AND clerkid = $1",
-            [clerkid, tagname, isgoal, current, total, category]
+            "UPDATE tags SET isgoal = $3, total = $4, category = $5 WHERE tagname = $2 AND clerkid = $1",
+            [clerkid, tagname, isgoal, total, category]
         );
         res.sendStatus(200);
     } catch (error) {
