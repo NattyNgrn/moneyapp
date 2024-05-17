@@ -1,5 +1,10 @@
 # Welcome to Nat's Money App
 
+![gif1](https://github.com/NattyNgrn/moneyapp/assets/132034444/b64e73ad-8fee-4686-bda5-d8822372fe94)
+![gif2](https://github.com/NattyNgrn/moneyapp/assets/132034444/458b18a1-cab5-45be-9da4-acbacd66abbf)
+![gif3](https://github.com/NattyNgrn/moneyapp/assets/132034444/cde76b55-16d7-4e90-bacf-5f69c368769b)
+
+
 ## Features
 - Allows users to sign up and login securely with clerk using their email or username and password.
 - Allows users to add transactions that can be income, savings, or expense, can be assigned a tag, date, and amount.
