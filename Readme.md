@@ -4,8 +4,9 @@
 
 ## Initialization and Setup
 
-Then setup the server
+First setup the server
 Create a .env file in the server folder.
+Put the Postgres information I send in the .env file.
 ```
 cd server
 npm install
@@ -26,7 +27,6 @@ npm run dev
 ### User Authentication - Clerk
 The user authentication, sign-up, and sign-in is handled by Clerk for security purposes.
 
-
 ### Frontend
 - vite - for initial project template and building
 - clerk - for user authentication
@@ -34,18 +34,22 @@ The user authentication, sign-up, and sign-in is handled by Clerk for security p
 - react - for UI
 - react-dom - for routing between pages
 - tailwind - for inline css styling
--google charts - for stylish pie charts
+- google charts - for stylish pie charts
 
 ### Backend
 - body-parser - to parse request body
 - cors - to make external requests to API's
--dotenv -
+- dotenv - to access the .env file in the backend
 - express - as the routing framework
 - nodemon - for starting up the node backend
 - pg - for connecting to postgresql database
 
 ## Database
 
+
+
 ## Express Routes
 
+
 ## Tests
+

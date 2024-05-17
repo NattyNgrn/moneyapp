@@ -11,8 +11,6 @@ function DonutChartCard({title, current, goal}) {
         ["Current", Number(current)],
         ["Remaining", Number(remaining)],
     ];
-    console.log(title, goal, current, remaining);
-    //console.log(title, data);
 
     const options = {
         title: title,
@@ -21,13 +19,13 @@ function DonutChartCard({title, current, goal}) {
         backgroundColor: 'transparent',
         slices: [
             {
+                color: "#673ab7"
+            },
+            {
                 color: "#e91e63"
             },
             {
                 color: "#f8bbd0"
-            },
-            {
-                color: "#673ab7"
             },
             {
                 color: "#7b1fa2"

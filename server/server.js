@@ -140,22 +140,27 @@ app.get("/getgoalsinfo/:clerkid", async (req, res) => {
     }
 });
 
+async function getCategoryInfo(category, clerkid) {
+    let result = [["tag", "amount"]];
+    const tags = await pool.query(
+        "SELECT tagname FROM tags WHERE clerkid=$2 AND category = $1",
+        [category, clerkid]
+    );
+    for (let i = 0; i < tags.rows.length; i++) {
+        const tagname = tags.rows[i].tagname;
+        const amount = await getAmountForTag(tagname, clerkid);
+        result.push([tagname, Number(amount)]);
+    }
+    return result;
+}
+
 app.get("/getcategoryinfo/:clerkid", async (req, res) => {
     try {
         const clerkid = req.params.clerkid;
-        const { category } = req.body;
-        let result = [];
-        const tags = await pool.query(
-            "SELECT tagname FROM tags WHERE clerkid=$2 AND category = $1",
-            [category, clerkid]
-        );
-        for (const row in tags.rows) {
-            const amount = await getAmountForTag(row.tagname);
-            result.push({
-                tagname: row.tagname,
-                amount: amount
-            });
-        }
+        let result = {};
+        result.income = await getCategoryInfo("Income", clerkid);
+        result.expense = await getCategoryInfo("Expense", clerkid);
+        result.saving = await getCategoryInfo("Saving", clerkid);
         res.send(result);
     } catch (error) {
         console.log(error);

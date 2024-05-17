@@ -11,11 +11,12 @@ function GoalsPage() {
     const [goalsInfo, setGoalsInfo] = useState([]);
 
     useEffect(() => {
-        if (isLoaded && user)
-        fetch(`http://localhost:1287/getgoalsinfo/${user.id}`)
-        .then((response) => response.json())
-        .then((data) => setGoalsInfo(data))
-        .catch((error) => console.error('Error:', error));
+        if (isLoaded && user) {
+            fetch(`http://localhost:1287/getgoalsinfo/${user.id}`)
+            .then((response) => response.json())
+            .then((data) => setGoalsInfo(data))
+            .catch((error) => console.error('Error:', error));
+        }
     }, [setGoalsInfo, isLoaded, user]);
 
     return (
